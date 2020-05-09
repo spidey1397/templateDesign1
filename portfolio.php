@@ -3,6 +3,7 @@
 
 include_once 'connection.php';
 $cat = mysqli_query($conn, "SELECT * FROM category");
+$img = mysqli_query($conn, "SELECT * FROM images");
 $result = mysqli_query($conn, "SELECT * FROM tables");
 
 
@@ -50,6 +51,9 @@ $result = mysqli_query($conn, "SELECT * FROM tables");
 	<!-- Page header section end -->
 
 
+<!-- this loop-1 is for images & category tables -->
+
+
 	<!-- Page section start -->
 	<div class="page-section spad">
 		<div class="container">
@@ -68,17 +72,13 @@ $result = mysqli_query($conn, "SELECT * FROM tables");
 	</div>
 	</div>
 	<!-- PROJECT 1 -->
-	
+
 		<!-- portfolio items -->
-		<?php 
-			while($rs = mysqli_fetch_array($result)) {
-			$rp = $rs["tbName"];
-				$record = mysqli_query($conn, "SELECT * FROM $rp");
-		?>
-		<div class="portfolio-warp spad">
+		
+		<div class="portfolio-warp">
 			<div id="portfolio">
 				<div class="grid-sizer"></div>
-				<?php while ($report = mysqli_fetch_array($record)) { ?>
+				<?php while ($report = mysqli_fetch_array($img)) { ?>
 				<!-- portfolio item -->
 				<div class="grid-item set-bg <?php echo $report['cls']; ?>" data-setbg="<?php echo $report['file']; ?>"><a class="img-popup" href="<?php echo $report['file']; ?>"></a></div>
 				<!-- portfolio item -->
@@ -88,24 +88,73 @@ $result = mysqli_query($conn, "SELECT * FROM tables");
 				?>
 			</div>
 		</div>
+		
+	<!-- End of loop-1 -->
+
+
+
+	<!-- this loop-2 is for dynamic tables -->
+
+	<?php
+while($rs = mysqli_fetch_array($result)) {
+$rp = $rs['tbName'];		
+?>
+<br>
+<br>
+<div>
+	<h2 class="p-3" style="background: #092756;
+ background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top, rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg, #670d10 0%, #092756 100%);
+ background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg, #670d10 0%,#092756 100%);
+ background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg, #670d10 0%,#092756 100%);
+ background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg, #670d10 0%,#092756 100%);
+ background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg, #670d10 0%,#092756 100%); color: #fff;"><?php echo $rs["tbName"];?></h2>
+</div>
+	<!-- Page section start -->
+	<?php 
+		$record = mysqli_query($conn,"SELECT * FROM $rp");
+		
+		while ($report = mysqli_fetch_array($record)) { 
+	?>
+	<div class="page-section spad">
+		<div class="container">
+			<!-- portfolio filter menu -->
+			<ul class="portfolio-filter">
+				
+				<li class="filter" data-filter=""><?php echo $report["cat_id"]; ?></li>
+				
+				
+			</ul>
+	</div>
+	</div>
+	<!-- PROJECT 2 -->
+ 
+		<!-- portfolio items -->
+		
+		<div class="portfolio-warp">
+			<div id="portfolio">
+				<div class="grid-sizer"></div>
+				
+				<!-- portfolio item -->
+				<div class="grid-item set-bg <?php echo $report['cls']; ?>"><img src="<?php echo $report['file'];?>	"> </div>
+				<!-- portfolio item -->
+					
+			</div>
+		</div>
+		<?php
+					}
+				
+				?>
 		<?php
 	}
 	?>
+      <!-- End of loop-2 -->
+		<br>
+		<br>
 	
-
-		
 	
-	<div class="container">
-			<div class="pagination">
-				<a href="#">01</a>
-				<a href="" class="active">02</a>
-				<a href="">03</a>
-			</div>
-		</div>
 	<!-- Page section end -->
 <!-- footer section start -->
 <?php
-	echo "hello";
 	include_once'footer.php';
 ?>
 <!-- footer section end -->

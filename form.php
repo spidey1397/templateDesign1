@@ -4,12 +4,13 @@ include_once 'connection.php';
 
 if (isset($_POST['submit'])) {
   $tablename = $_POST['tablename'];
+  $categories = $_POST['cat_id'];
 	$clss = $_POST['clss'];
 	$file = $_FILES['file'];
   $dbname = 'temp1';
   $dbtable = $dbname.".".$tablename;
   $_SESSION['tableName'] = $tablename;
-  $sql = "CREATE TABLE $tablename (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, cls VARCHAR(100) NOT NULL, file VARCHAR(200) NOT NULL, createdat TIMESTAMP NOT NULL)";
+  $sql = "CREATE TABLE $tablename (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, cat_id VARCHAR(200) NOT NULL, cls VARCHAR(100) NOT NULL, file VARCHAR(200) NOT NULL, createdat TIMESTAMP NOT NULL)";
 
 	$fileName = $_FILES['file']['name'];
 	$fileTmpName = $_FILES['file']['tmp_name'];
@@ -29,13 +30,13 @@ if (isset($_POST['submit'])) {
 					move_uploaded_file($fileTmpName, $fileDestination);
 
           $film = "INSERT INTO tables (tbName) VALUES ('$tablename')";
-					$query = "INSERT INTO $tablename (cls,file) VALUES ('$clss','$fileDestination')";
+					$query = "INSERT INTO $tablename (cat_id,cls,file) VALUES ('$categories','$clss','$fileDestination')";
           
 
 					if (mysqli_query($conn, $sql) && mysqli_query($conn, $film) && mysqli_query($conn, $query)) {
 						header('location:portfolio.php');
 					}else {
-						echo ("error" .mysqli_error());
+						echo ("error" .mysqli_error($conn));
 					}
 	 			} else {
 					echo '<script>alert("Your file is too big.!"); window.location.href="form.php";</script>';
@@ -88,6 +89,24 @@ if (isset($_POST['submit'])) {
             <label>Name your presentation</label>
     <input type="text" name="tablename" class="form-control">
   </div>
+  <div class="form-group">
+
+            <label for="exampleFormControlSelect1">Categories</label>
+             
+            <select class=" form-control" id="exampleFormControlSelect1" name="cat_id">
+             <?php
+             $cat = mysqli_query($conn, "SELECT * FROM category");
+              while ($rw = mysqli_fetch_array($cat)) {
+              ?>
+              <option value="<?php echo $rw["cat_name"]; ?>"><?php echo $rw["cat_name"]; ?></option>
+              <?php
+              }
+              ?>
+             
+
+            </select>
+
+          </div>
   
       			<div class="form-group">
     <label for="exampleFormControlSelect1">Predefined class</label>
