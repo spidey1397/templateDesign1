@@ -2,21 +2,19 @@
 session_start();
 include_once 'connection.php';
 
+
 if (isset($_POST['submit'])) {
-  $tablename = $_POST['tablename'];
-  $categories = $_POST['cat_id'];
+  
 	$clss = $_POST['clss'];
 	$file = $_FILES['file'];
-  $dbname = 'temp1';
-  $dbtable = $dbname.".".$tablename;
-  $_SESSION['tableName'] = $tablename;
-  $sql = "CREATE TABLE $tablename (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, cat_id VARCHAR(200) NOT NULL, cls VARCHAR(100) NOT NULL, file VARCHAR(200) NOT NULL, createdat TIMESTAMP NOT NULL)";
+  
+  for($i=0; $i<count($_FILES['file']['name']); $i++) {
 
-	$fileName = $_FILES['file']['name'];
-	$fileTmpName = $_FILES['file']['tmp_name'];
-	$fileSize = $_FILES['file']['size'];
-	$fileError = $_FILES['file']['error'];
-	$fileType = $_FILES['file']['type'];
+	$fileName = $_FILES['file']['name'] [$i];
+	$fileTmpName = $_FILES['file']['tmp_name'] [$i];
+	$fileSize = $_FILES['file']['size'] [$i];
+	$fileError = $_FILES['file']['error'] [$i];
+	$fileType = $_FILES['file']['type'] [$i];
 
 	$fileExt = explode('.', $fileName);
 	$fileActualExt = strtolower(end($fileExt));
@@ -29,15 +27,17 @@ if (isset($_POST['submit'])) {
 					$fileDestination = 'img/portfolio/'.$fileName;
 					move_uploaded_file($fileTmpName, $fileDestination);
 
-          $film = "INSERT INTO tables (tbName) VALUES ('$tablename')";
-					$query = "INSERT INTO $tablename (cat_id,cls,file) VALUES ('$categories','$clss','$fileDestination')";
+          $table_name = $_SESSION['tablename'];    
+
+					$query = "INSERT INTO $table_name (cls,file) VALUES ('$clss','$fileDestination')";
           
 
-					if (mysqli_query($conn, $sql) && mysqli_query($conn, $film) && mysqli_query($conn, $query)) {
+					if (mysqli_query($conn, $query)) {
 						header('location:portfolio.php');
 					}else {
 						echo ("error" .mysqli_error($conn));
 					}
+        
 	 			} else {
 					echo '<script>alert("Your file is too big.!"); window.location.href="form.php";</script>';
 				}	
@@ -47,6 +47,7 @@ if (isset($_POST['submit'])) {
 	} else {
 		echo '<script>alert("You can not upload this type of file.!"); window.location.href="form.php";</script>';
 	}
+}
 }
 
 ?>
@@ -63,6 +64,7 @@ if (isset($_POST['submit'])) {
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 <!-- Material Design Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
+
 	<script>
     	$(document).ready(function(){
         	$("#exampleModal").modal('show');
@@ -85,47 +87,29 @@ if (isset($_POST['submit'])) {
       </div>
       <div class="modal-body">
       	<form method="post" action="" enctype="multipart/form-data">
-      		<div class="form-group">
-            <label>Name your presentation</label>
-    <input type="text" name="tablename" class="form-control">
-  </div>
-  <div class="form-group">
+      	
+ 
 
-            <label for="exampleFormControlSelect1">Categories</label>
-             
-            <select class=" form-control" id="exampleFormControlSelect1" name="cat_id">
-             <?php
-             $cat = mysqli_query($conn, "SELECT * FROM category");
-              while ($rw = mysqli_fetch_array($cat)) {
-              ?>
-              <option value="<?php echo $rw["cat_name"]; ?>"><?php echo $rw["cat_name"]; ?></option>
-              <?php
-              }
-              ?>
-             
-
-            </select>
-
-          </div>
   
       			<div class="form-group">
     <label for="exampleFormControlSelect1">Predefined class</label>
     <select class="form-control" id="exampleFormControlSelect1" name="clss" required>
-      <option>photo</option>
-      <option>design</option>
-      <option>iden</option>
-      <option>corp</option>
-      <option>uxui</option>
-      <option>iden design</option>
-      <option>corp photo</option>
-      <option>uxui iden</option>     
+      <option>kitchen</option>
+      <option>bedroom</option>
+      <option>living</option>
+      <option>washing</option>
+      <option>balcony</option>
+      <option>window</option>
+      <option>garden</option>
+      <option>parking</option>
+      <option>common</option>     
     </select>
   </div>
   
   <div class="input-group">
   <div class="custom-file">
     <input type="file" class="custom-file-input" id="inputGroupFile01"
-      aria-describedby="inputGroupFileAddon01" name="file" required>
+      aria-describedby="inputGroupFileAddon01" name="file[]" multiple required>
     <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
   </div>
 </div>
@@ -133,14 +117,14 @@ if (isset($_POST['submit'])) {
         
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" name="submit">Save changes</button>
+        <button type="submit" class="btn btn-primary" name="submit">Upload</button>
       </div>
       </form>
     </div>
   </div>
 </div>
 
-<!-- JQuery -->
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- Bootstrap tooltips -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>

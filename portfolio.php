@@ -102,25 +102,28 @@ $rp = $rs['tbName'];
 <br>
 <br>
 <div>
-	<h2 class="p-3" style="background: #092756;
- background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top, rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg, #670d10 0%, #092756 100%);
- background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg, #670d10 0%,#092756 100%);
- background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg, #670d10 0%,#092756 100%);
- background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg, #670d10 0%,#092756 100%);
- background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg, #670d10 0%,#092756 100%); color: #fff;"><?php echo $rs["tbName"];?></h2>
+	<h2 class="p-3" style="border: 5px solid;
+  border-image-source: linear-gradient(45deg, rgb(0,143,104), rgb(250,224,66));
+  border-image-slice: 1;
+"><?php echo $rs["tbName"];?></h2>
 </div>
 	<!-- Page section start -->
-	<?php 
-		$record = mysqli_query($conn,"SELECT * FROM $rp");
-		
-		while ($report = mysqli_fetch_array($record)) { 
-	?>
+	
 	<div class="page-section spad">
 		<div class="container">
 			<!-- portfolio filter menu -->
 			<ul class="portfolio-filter">
 				
-				<li class="filter" data-filter=""><?php echo $report["cat_id"]; ?></li>
+				<li class="filter" data-filter="" onclick="myFunction()"><?php echo $rs["cat1"];?></li>
+				<li class="filter" data-filter="" onclick="myFunction1()"><?php echo $rs["cat2"];?></li>
+				<li class="filter" data-filter="" onclick="myFunction2()"><?php echo $rs["cat3"];?></li>
+				<li class="filter" data-filter="" onclick="myFunction3()"><?php echo $rs["cat4"];?></li>
+				<li class="filter" data-filter="" onclick="myFunction4()"><?php echo $rs["cat5"];?></li>
+				<li class="filter" data-filter="" onclick="myFunction5()"><?php echo $rs["cat6"];?></li>
+				<li class="filter" data-filter="" onclick="myFunction6()"><?php echo $rs["cat7"];?></li>
+				<li class="filter" data-filter="" onclick="myFunction7()"><?php echo $rs["cat8"];?></li>
+				<li class="filter" data-filter="" onclick="myFunction8()"><?php echo $rs["cat9"];?></li>
+
 				
 				
 			</ul>
@@ -132,18 +135,37 @@ $rp = $rs['tbName'];
 		
 		<div class="portfolio-warp">
 			<div id="portfolio">
-				<div class="grid-sizer"></div>
+				
 				
 				<!-- portfolio item -->
-				<div class="grid-item set-bg <?php echo $report['cls']; ?>"><img src="<?php echo $report['file'];?>	"> </div>
+				
+					<div class="row">
+						
+							
+						
+					<?php 
+					$record = mysqli_query($conn,"SELECT * FROM $rp");
+		
+						while ($report = mysqli_fetch_array($record)) { 
+					?>
+					<div class="grid-item" >
+					<img class="<?php echo $report['cls']; ?>" src="<?php echo $report['file'];?>">
+						
+				
+					</div>
+					<?php
+						}
+				
+					?>
+
+					</div>
+				
 				<!-- portfolio item -->
+				
 					
 			</div>
 		</div>
-		<?php
-					}
-				
-				?>
+		
 		<?php
 	}
 	?>
@@ -158,7 +180,80 @@ $rp = $rs['tbName'];
 	include_once'footer.php';
 ?>
 <!-- footer section end -->
-
+<script>
+	function myFunction() {
+  		var x = document.getElementsByClassName("kitchen");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+	function myFunction1() {
+  		var x = document.getElementsByClassName("bedroom");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+	function myFunction2() {
+  		var x = document.getElementByClassName("living");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+	function myFunction3() {
+  		var x = document.getElementByClassName("washing");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+	function myFunction4() {
+  		var x = document.getElementByClassName("balcony");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+	function myFunction5() {
+  		var x = document.getElementByClassName("window");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+	function myFunction6() {
+  		var x = document.getElementByClassName("garden");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+	function myFunction7() {
+  		var x = document.getElementByClassName("parking");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+	function myFunction8() {
+  		var x = document.getElementByClassName("common");
+  		if (x.style.display === "none") {
+    		x.style.display = "block";
+  		} else {
+    		x.style.display = "none";
+  		}
+	}
+</script>
 	<!--====== Javascripts & Jquery ======-->
 	<script src="js/jquery-2.1.4.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
