@@ -149,7 +149,7 @@ $rp = $rs['tbName'];
 						while ($report = mysqli_fetch_array($record)) { 
 					?>
 					<div class="grid-item" >
-					<img class="<?php echo $report['cls']; ?>" src="<?php echo $report['file'];?>">
+					<img id="<?php echo $report['cls']; ?>" src="<?php echo $report['file'];?>">
 						
 				
 					</div>
@@ -182,7 +182,7 @@ $rp = $rs['tbName'];
 <!-- footer section end -->
 <script>
 	function myFunction() {
-  		var x = document.getElementsByClassName("kitchen");
+  		var x = document.getElementById("kitchen");
   		if (x.style.display === "none") {
     		x.style.display = "block";
   		} else {
@@ -190,7 +190,7 @@ $rp = $rs['tbName'];
   		}
 	}
 	function myFunction1() {
-  		var x = document.getElementsByClassName("bedroom");
+  		var x = document.getElementById("bedroom");
   		if (x.style.display === "none") {
     		x.style.display = "block";
   		} else {

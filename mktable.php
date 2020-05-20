@@ -1,37 +1,44 @@
 <?php
-session_start();
+
 include_once 'connection.php';
 
 if (isset($_POST['submit'])) {
   $tablename = $_POST['tablename'];
-  $cat_name1 = $_POST['cat_id1'];
-  $cat_name2 = $_POST['cat_id2'];
-  $cat_name3 = $_POST['cat_id3'];
-  $cat_name4 = $_POST['cat_id4'];
-  $cat_name5 = $_POST['cat_id5'];
-  $cat_name6 = $_POST['cat_id6'];
-  $cat_name7 = $_POST['cat_id7'];
-  $cat_name8 = $_POST['cat_id8'];
-  $cat_name9 = $_POST['cat_id9'];
+  $cat_name1 = $_POST['cat_name'];
+
+
 
 
 
 	
-  $sql = "CREATE TABLE $tablename (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, cls VARCHAR(100) NOT NULL, file VARCHAR(200) NOT NULL, createdat TIMESTAMP NOT NULL)";
+  $sql = "CREATE TABLE $tablename (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, category VARCHAR(200) NOT NULL, classcat VARCHAR(200) NOT NULL, createdat TIMESTAMP NOT NULL)";	
 
-	
-
-          $film = "INSERT INTO tables (tbName,cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8,cat9) VALUES ('$tablename','$cat_name1','$cat_name2','$cat_name3','$cat_name4','$cat_name5','$cat_name6','$cat_name7','$cat_name8','$cat_name9')";
-          $_SESSION['tablename'] = $tablename;
+          $film = "INSERT INTO tables (tbName) VALUES ('$tablename')";
           
-     
-          
+          if (mysqli_query($conn, $film) && mysqli_query($conn, $sql)) {
 
-					if (mysqli_query($conn, $film) && mysqli_query($conn, $sql)) {
-						header('location:insert_tb.php');
-					}else {
-						echo ("error" .mysqli_error($conn));
-					}
+          // forloop start
+              foreach($cat_name1 as $value) {
+
+                    $qtyOut = $value;
+                    $classcat = $tablename . $qtyOut;
+                  $into_db = "INSERT INTO $tablename (category, classcat) VALUES ('$qtyOut', '$classcat')";
+      
+
+                   if (mysqli_query($conn, $into_db)) {
+                     
+                   }else {
+                     echo ("error" .mysqli_error($conn));
+                   }
+                   header('location:portfolio.php');
+           }  
+
+           // end of foreach loop     
+
+          }else {
+            echo ("error" .mysqli_error($conn));
+          }
+  
 }
 
 ?>
@@ -78,51 +85,51 @@ if (isset($_POST['submit'])) {
  
 <!-- Default inline 1-->
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline1" name="cat_id1" value="Kitchen">
+  <input type="checkbox" class="custom-control-input" id="defaultInline1" name="cat_name[]" value="Kitchen">
   <label class="custom-control-label" for="defaultInline1">Kitchen</label>
 </div>
 
 <!-- Default inline 2-->
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline2" name="cat_id2" value="Bedroom">
+  <input type="checkbox" class="custom-control-input" id="defaultInline2" name="cat_name[]" value="Bedroom">
   <label class="custom-control-label" for="defaultInline2">Bedroom</label>
 </div>
 
 <!-- Default inline 3-->
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline3" name="cat_id3" value="Living room">
+  <input type="checkbox" class="custom-control-input" id="defaultInline3" name="cat_name[]" value="Living room">
   <label class="custom-control-label" for="defaultInline3">Living room</label>
 </div>
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline4" name="cat_id4" value="Washing area">
+  <input type="checkbox" class="custom-control-input" id="defaultInline4" name="cat_name[]" value="Washing area">
   <label class="custom-control-label" for="defaultInline4">Washing area</label>
 </div>
 
 <!-- Default inline 2-->
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline5" name="cat_id5" value="Balcony">
+  <input type="checkbox" class="custom-control-input" id="defaultInline5" name="cat_name[]" value="Balcony">
   <label class="custom-control-label" for="defaultInline5">Balcony</label>
 </div>
 
 <!-- Default inline 3-->
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline6" name="cat_id6" value="Window view">
+  <input type="checkbox" class="custom-control-input" id="defaultInline6" name="cat_name[]" value="Window view">
   <label class="custom-control-label" for="defaultInline6">Window view</label>
 </div>
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline7" name="cat_id7" value="Garden view">
+  <input type="checkbox" class="custom-control-input" id="defaultInline7" name="cat_name[]" value="Garden view">
   <label class="custom-control-label" for="defaultInline7">Garden View</label>
 </div>
 
 <!-- Default inline 2-->
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline8" name="cat_id8" value="Parking area">
+  <input type="checkbox" class="custom-control-input" id="defaultInline8" name="cat_name[]" value="Parking area">
   <label class="custom-control-label" for="defaultInline8">Parking Area</label>
 </div>
 
 <!-- Default inline 3-->
 <div class="custom-control custom-checkbox custom-control-inline">
-  <input type="checkbox" class="custom-control-input" id="defaultInline9" name="cat_id9" value="Common plot">
+  <input type="checkbox" class="custom-control-input" id="defaultInline9" name="cat_name[]" value="Common plot">
   <label class="custom-control-label" for="defaultInline9">Common plot</label>
 </div>
   

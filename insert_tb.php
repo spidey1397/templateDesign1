@@ -1,15 +1,19 @@
 <?php
-session_start();
+
 include_once 'connection.php';
 
+$tb1=mysqli_query($conn, "SELECT * FROM tables");
+$category1=mysqli_query($conn, "SELECT * FROM tables");
 
 if (isset($_POST['submit'])) {
-  
-	$clss = $_POST['clss'];
+
+	$clss = $_POST['class_id'];
+  $tb_id = $_POST['table_id'];
 	$file = $_FILES['file'];
   
   for($i=0; $i<count($_FILES['file']['name']); $i++) {
-
+  $clss = json_decode($_POST['class_id'] [$i]);
+  $tb_id = json_decode($_POST['table_id'] [$i]);
 	$fileName = $_FILES['file']['name'] [$i];
 	$fileTmpName = $_FILES['file']['tmp_name'] [$i];
 	$fileSize = $_FILES['file']['size'] [$i];
@@ -27,13 +31,13 @@ if (isset($_POST['submit'])) {
 					$fileDestination = 'img/portfolio/'.$fileName;
 					move_uploaded_file($fileTmpName, $fileDestination);
 
-          $table_name = $_SESSION['tablename'];    
+             
 
-					$query = "INSERT INTO $table_name (cls,file) VALUES ('$clss','$fileDestination')";
+					$query = "INSERT INTO uploaded (file,cat_id,table_id) VALUES ('$fileDestination','$clss','$tb_id')";
           
 
 					if (mysqli_query($conn, $query)) {
-						header('location:portfolio.php');
+						header('location:insert_tb.php');
 					}else {
 						echo ("error" .mysqli_error($conn));
 					}
@@ -80,7 +84,7 @@ if (isset($_POST['submit'])) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Create New Presentation</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Upload Image into Table</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -90,35 +94,64 @@ if (isset($_POST['submit'])) {
       	
  
 
+ 
   
-      			<div class="form-group">
-    <label for="exampleFormControlSelect1">Predefined class</label>
-    <select class="form-control" id="exampleFormControlSelect1" name="clss" required>
-      <option>kitchen</option>
-      <option>bedroom</option>
-      <option>living</option>
-      <option>washing</option>
-      <option>balcony</option>
-      <option>window</option>
-      <option>garden</option>
-      <option>parking</option>
-      <option>common</option>     
+     <?php
+        while ($rw = mysqli_fetch_array($category1)) {
+          $rp=$rw['tbName'];
+          ?>
+          <div class="form-group">
+    <label for="exampleFormControlSelect1">Table Name</label>
+    <select class="form-control" id="exampleFormControlSelect1" name="table_id[]" >
+      
+        <option value="<?php echo $rw['id']; ?>"><?php echo $rw['tbName']; ?></option>
+      
     </select>
+    
   </div>
+      			<div class="form-group">
+
+<?php
+          
+          $report=mysqli_query($conn,"SELECT * FROM $rp");
+?>    
+            
+
+
+  <label for="exampleFormControlSelect1">Choose Category</label>
+    <select class="form-control" id="exampleFormControlSelect1" name="class_id[]" >
+      <?php
+      while ($rcvd = mysqli_fetch_array($report)) { 
+        ?>
+            <option value="<?php echo $rcvd['id']; ?>"><?php echo $rcvd['category']; ?></option>
+      <?php
+    }
+    ?>
+    </select>
+
+  </div>
+ 
   
   <div class="input-group">
   <div class="custom-file">
     <input type="file" class="custom-file-input" id="inputGroupFile01"
-      aria-describedby="inputGroupFileAddon01" name="file[]" multiple required>
+      aria-describedby="inputGroupFileAddon01" name="file[]" multiple >
     <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
   </div>
 </div>
+
+      <hr>
+       <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" name="submit">Upload</button>
+      </div>
+ <?php
+          
+        }
+      ?>
       	
         
       </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" name="submit">Upload</button>
-      </div>
+     
       </form>
     </div>
   </div>
