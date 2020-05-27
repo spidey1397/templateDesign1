@@ -5,6 +5,13 @@ include_once 'connection.php';
 $cat = mysqli_query($conn, "SELECT * FROM category");
 $img = mysqli_query($conn, "SELECT * FROM images");
 $result = mysqli_query($conn, "SELECT * FROM tables");
+$res = mysqli_query($conn, "SELECT * FROM tables");
+
+
+
+
+		
+
 
 
 
@@ -96,8 +103,10 @@ $result = mysqli_query($conn, "SELECT * FROM tables");
 	<!-- this loop-2 is for dynamic tables -->
 
 	<?php
-while($rs = mysqli_fetch_array($result)) {
-$rp = $rs['tbName'];		
+while($rv = mysqli_fetch_array($res)) {
+	$rm = $rv['tbName'];
+	 
+	$data = mysqli_query($conn,"SELECT uploaded.id, $rm.category, uploaded.file FROM uploaded INNER JOIN ON uploaded.cat_id=$rm.id");		
 ?>
 <br>
 <br>
@@ -105,7 +114,7 @@ $rp = $rs['tbName'];
 	<h2 class="p-3" style="border: 5px solid;
   border-image-source: linear-gradient(45deg, rgb(0,143,104), rgb(250,224,66));
   border-image-slice: 1;
-"><?php echo $rs["tbName"];?></h2>
+"><?php echo $rv["tbName"];?></h2>
 </div>
 	<!-- Page section start -->
 	
@@ -114,17 +123,9 @@ $rp = $rs['tbName'];
 			<!-- portfolio filter menu -->
 			<ul class="portfolio-filter">
 				
-				<li class="filter" data-filter="" onclick="myFunction()"><?php echo $rs["cat1"];?></li>
-				<li class="filter" data-filter="" onclick="myFunction1()"><?php echo $rs["cat2"];?></li>
-				<li class="filter" data-filter="" onclick="myFunction2()"><?php echo $rs["cat3"];?></li>
-				<li class="filter" data-filter="" onclick="myFunction3()"><?php echo $rs["cat4"];?></li>
-				<li class="filter" data-filter="" onclick="myFunction4()"><?php echo $rs["cat5"];?></li>
-				<li class="filter" data-filter="" onclick="myFunction5()"><?php echo $rs["cat6"];?></li>
-				<li class="filter" data-filter="" onclick="myFunction6()"><?php echo $rs["cat7"];?></li>
-				<li class="filter" data-filter="" onclick="myFunction7()"><?php echo $rs["cat8"];?></li>
-				<li class="filter" data-filter="" onclick="myFunction8()"><?php echo $rs["cat9"];?></li>
+				<li class="filter" data-filter=""></li>
+		
 
-				
 				
 			</ul>
 	</div>
@@ -143,20 +144,22 @@ $rp = $rs['tbName'];
 						
 							
 						
-					<?php 
-					$record = mysqli_query($conn,"SELECT * FROM $rp");
-		
-						while ($report = mysqli_fetch_array($record)) { 
-					?>
+				
 					<div class="grid-item" >
-					<img id="<?php echo $report['cls']; ?>" src="<?php echo $report['file'];?>">
-						
+					<?php
+					
+					while ($rz=mysqli_fetch_array($data)) {  
+					?>
+						<img src="<?php echo $rz['file'];?>">
+					<?php
+					}
+					?>
 				
 					</div>
-					<?php
-						}
 				
-					?>
+				
+					
+
 
 					</div>
 				
@@ -165,6 +168,7 @@ $rp = $rs['tbName'];
 					
 			</div>
 		</div>
+		
 		
 		<?php
 	}
@@ -180,80 +184,7 @@ $rp = $rs['tbName'];
 	include_once'footer.php';
 ?>
 <!-- footer section end -->
-<script>
-	function myFunction() {
-  		var x = document.getElementById("kitchen");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-	function myFunction1() {
-  		var x = document.getElementById("bedroom");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-	function myFunction2() {
-  		var x = document.getElementByClassName("living");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-	function myFunction3() {
-  		var x = document.getElementByClassName("washing");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-	function myFunction4() {
-  		var x = document.getElementByClassName("balcony");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-	function myFunction5() {
-  		var x = document.getElementByClassName("window");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-	function myFunction6() {
-  		var x = document.getElementByClassName("garden");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-	function myFunction7() {
-  		var x = document.getElementByClassName("parking");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-	function myFunction8() {
-  		var x = document.getElementByClassName("common");
-  		if (x.style.display === "none") {
-    		x.style.display = "block";
-  		} else {
-    		x.style.display = "none";
-  		}
-	}
-</script>
+
 	<!--====== Javascripts & Jquery ======-->
 	<script src="js/jquery-2.1.4.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
